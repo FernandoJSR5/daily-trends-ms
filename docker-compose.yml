@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - NODE_ENV=dev
+      - BASE_PATH=/api/v1
+      - SWAGGER_API_SPEC=/api/v1/spec
+      - REQUEST_LIMIT=100kb
+      - LOG_LEVEL=debug
+      - MONGO_URL=mongodb://root:password@localhost:27017/dailyTrends?authSource=admin
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+volumes:
+  mongo-data:

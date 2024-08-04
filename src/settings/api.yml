@@ -1,0 +1,258 @@
+swagger: '2.0'
+info:
+  title: Daily Trends MS
+  description: API for performing CRUD operations on feed information.
+  version: 1.0.0
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /feeds:
+    post:
+      tags:
+        - Actions
+      summary: Save a new feed to the database
+      description: Save the feed information provided in the request body to the database.
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          description: Feed information to be saved
+          schema:
+            $ref: '#/definitions/FeedDTO'
+      responses:
+        '200':
+          description: Feed saved successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+          examples:
+            application/json:
+              status: success
+              description: Feed was created successfully
+              data:
+                title: Alcaraz hoy, en directo | El español resiste los ataques del serbio en el segundo set
+                description: Carlos Alcaraz y Novak Djokovic buscarán su primera medalla de oro en unos Juegos Olímpicos
+                author: Daniel Gómez-Fontecha
+                journal: El Mundo
+                link: https://www.elmundo.es/deportes/juegos-olimpicos/2024/08/04/66af510e41c6010024fe658b-directo.html
+        '400':
+          description: Bad request. Missing required fields or invalid data.
+          schema:
+            $ref: '#/definitions/ApiError'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/ApiError'
+    get:
+      tags:
+        - Actions
+      summary: Retrieve all feeds
+      description: Retrieve all feed information from the database. Optionally, filter by journal.
+      produces:
+        - application/json
+      parameters:
+        - name: journal
+          in: query
+          description: Filter feeds by journal name
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Feeds retrieved successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+          examples:
+            application/json:
+              status: success
+              description: Feeds were retrieved successfully
+              data:
+                - title: Alcaraz hoy, en directo | El español resiste los ataques del serbio en el segundo set
+                  description: Carlos Alcaraz y Novak Djokovic buscarán su primera medalla de oro en unos Juegos Olímpicos
+                  author: Daniel Gómez-Fontecha
+                  journal: El Mundo
+                  link: https://www.elmundo.es/deportes/juegos-olimpicos/2024/08/04/66af510e41c6010024fe658b-directo.html
+                - title: Another feed title
+                  description: Another feed description
+                  author: Another author
+                  journal: Another journal
+                  link: https://example.com
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/ApiError'
+  /feeds/{id}:
+    get:
+      tags:
+        - Actions
+      summary: Retrieve a feed by ID
+      description: Retrieve a specific feed by its ID from the database.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the feed to retrieve
+          type: string
+      responses:
+        '200':
+          description: Feed retrieved successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+          examples:
+            application/json:
+              status: success
+              description: Feed retrieved successfully
+              data:
+                title: Alcaraz hoy, en directo | El español resiste los ataques del serbio en el segundo set
+                description: Carlos Alcaraz y Novak Djokovic buscarán su primera medalla de oro en unos Juegos Olímpicos
+                author: Daniel Gómez-Fontecha
+                journal: El Mundo
+                link: https://www.elmundo.es/deportes/juegos-olimpicos/2024/08/04/66af510e41c6010024fe658b-directo.html
+        '404':
+          description: Feed not found
+          schema:
+            $ref: '#/definitions/ApiError'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/ApiError'
+    put:
+      tags:
+        - Actions
+      summary: Update a feed by ID
+      description: Update the feed information for a specific feed by its ID.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the feed to update
+          type: string
+        - name: body
+          in: body
+          required: true
+          description: Updated feed information
+          schema:
+            $ref: '#/definitions/FeedDTO'
+      responses:
+        '200':
+          description: Feed updated successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+          examples:
+            application/json:
+              status: success
+              description: Feed updated successfully
+              data:
+                title: JJOO. Djokovic desquicia a Alcaraz y le arrebata el oro en la mejor final olímpica de la historia
+                description: El serbio vence (7-6 [3], 7-6 [2]) en el partido por el oro de los Juegos de París y completa su palmarés mientras el español descubre qué se sentía ante una derrota
+                author: JAVIER SÁNCHEZ
+                journal: El Mundo
+                link: https://www.elmundo.es/deportes/juegos-olimpicos/2024/08/04/66af8ba521efa06e3a8b457e.html
+        '404':
+          description: Feed not found
+          schema:
+            $ref: '#/definitions/ApiError'
+        '400':
+          description: Bad request. Missing required fields or invalid data.
+          schema:
+            $ref: '#/definitions/ApiError'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/ApiError'
+    delete:
+      tags:
+        - Actions
+      summary: Delete a feed by ID
+      description: Delete a specific feed from the database by its ID.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the feed to delete
+          type: string
+      responses:
+        '200':
+          description: Feed deleted successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+          examples:
+            application/json:
+              status: success
+              description: Feed deleted successfully
+        '404':
+          description: Feed not found
+          schema:
+            $ref: '#/definitions/ApiError'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/ApiError'
+  /spec:
+    get:
+      tags:
+        - Specification
+      summary: Retrieve API specification
+      description: Return the Swagger/OpenAPI specification for the API.
+      responses:
+        '200':
+          description: Swagger specification retrieved successfully
+          schema:
+            type: file
+            format: yaml
+
+definitions:
+  FeedDTO:
+    type: object
+    required:
+      - title
+      - description
+      - author
+      - journal
+      - link
+    properties:
+      title:
+        type: string
+        example: Alcaraz hoy, en directo | El español resiste los ataques del serbio en el segundo set
+      description:
+        type: string
+        example: Carlos Alcaraz y Novak Djokovic buscarán su primera medalla de oro en unos Juegos Olímpicos
+      author:
+        type: string
+        example: Daniel Gómez-Fontecha
+      journal:
+        type: string
+        example: El Mundo
+      link:
+        type: string
+        format: uri
+        example: https://www.elmundo.es/deportes/juegos-olimpicos/2024/08/04/66af510e41c6010024fe658b-directo.html
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: string
+        example: success
+      description:
+        type: string
+        example: Feed was created successfully
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/FeedDTO'
+  ApiError:
+    type: object
+    properties:
+      status:
+        type: string
+        example: error
+      description:
+        type: string
+        example: An error occurred
