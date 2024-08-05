@@ -1,20 +1,39 @@
 FROM node:18-alpine
 
-# Change the work directory app
+RUN apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    libx11 \
+    libxcomposite \
+    libxdamage \
+    libxrandr \
+    libxtst \
+    libxi \
+    libxkbcommon \
+    libdrm \
+    alsa-lib \
+    gdk-pixbuf \
+    pango \
+    mesa-gl \
+    fontconfig \
+    ttf-dejavu
+
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
 WORKDIR /app
 
-# Move both package.json and package-lock.json
 COPY ./package*.json ./
 
 RUN npm install --no-optional && npm cache clean --force
-ENV PATH /app/node_modules/.bin:$PATH
 
 COPY . .
 
-# Compile files in the dist folder
 RUN npm run build
 
 EXPOSE 8080
 
-# # Run the server
-CMD ["npm","run","start"]
+CMD ["npm", "run", "start"]

@@ -15,7 +15,11 @@ export class ScrapingService {
 
   private async launchBrowser(): Promise<Browser> {
     if (!this.browser) {
-      this.browser = await puppeteer.launch({ headless: false });
+      this.browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: '/usr/bin/chromium-browser',
+      headless: true,  // Establece en false si deseas ver la interfaz del navegador
+    });
     }
     return this.browser;
   }

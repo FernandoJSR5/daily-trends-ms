@@ -77,15 +77,6 @@ export class FeedRepository implements FeedRepositoryPort {
     }
   }
 
-  public async deleteAll(): Promise<void> {
-    try {
-      await FeedModel.deleteMany().exec();
-    } catch (error) {
-      console.error('Error deleting all feeds:', error);
-      throw new Error('Could not delete feeds at this time');
-    }
-  }
-
   public async updateById(id: string, feed: Feed): Promise<Feed | null> {
     try {
       const updatedFeedModel = await FeedModel.findByIdAndUpdate(

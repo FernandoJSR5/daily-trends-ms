@@ -1,4 +1,3 @@
-// src/infrastructure/mappers/FeedMapper.ts
 import { FeedBuilder } from '../../domain/builders/FeedBuilder';
 import { Feed } from '../../domain/entities/Feed';
 import { IFeed } from '../models/FeedModel';

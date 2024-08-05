@@ -49,10 +49,6 @@ export class FeedUseCases {
     return this.feedRepository.save(feed);
   }
 
-  public async deleteAll(): Promise<void> {
-    return this.feedRepository.deleteAll();
-  }
-
   public async findFeedById(id: string): Promise<Feed | null> {
     return this.feedRepository.findById(id);
   }
