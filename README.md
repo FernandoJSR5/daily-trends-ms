@@ -34,7 +34,7 @@ Para ejecutar el proyecto, asegúrate de tener Docker y Docker Compose instalado
 
 2. **Construye y ejecuta los contenedores con Docker Compose:**
    ```bash
-   docker-compose up --build
+   docker compose up --build
 
 3. **Accede a la API:**
    - La API estará disponible en [http://localhost:8080/api-docs#/](http://localhost:8080/api-docs#/). Puedes consultar la documentación de la API en esta URL para explorar los endpoints disponibles y probar las funcionalidades.
